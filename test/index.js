@@ -1,8 +1,7 @@
-const _ = require('lodash')
-const fs2mem = require('./lib/fs2mem')
-const mem2fs = require('./lib/mem2fs')
+const path = require('path')
+const MemoryTree = require('../index')
 
-const OPTIONS = {
+const memory = MemoryTree({
     /**
      * 存储数据时触发
      * @param  {string} pathname 对应路径, 会根据 `\/` 分割
@@ -29,7 +28,7 @@ const OPTIONS = {
      * @param  {string/buffer} data     资源内容 (注: 检查路径等时刻, data未设置, 参考 lib/fs2mem.js)
      * @return {boolean}         是否允许加载到内存
      */
-    buildFilter: (pathname, data) => (!data || data.length < 64 * 1024) && !/node_modules|([\\\/]|^)\./.test(pathname),
+    buildFilter: (pathname, data) => (!data || data.length < 4 * 1024) && !/node_modules|([\\\/]|^)\./.test(pathname),
     /**
      * 允许从内存中保存到文件系统的资源
      * @param  {string} pathname 待检查资源路径
@@ -44,27 +43,14 @@ const OPTIONS = {
      * @return {string}          重命名结果
      */
     outputRename: (pathname, data) => pathname
-}
+})
 
-const fixPath = pathname => pathname.match(/[^\\\/]+/g)
-
-module.exports = (options) => {
-    const {
-        onSet,
-        onGet,
-        buildFilter,
-        buildWatcher,
-        outputFilter
-    } = Object.assign({}, OPTIONS, options)
-    let store = {}
-
-    const set = (pathname, data) => pathname && _.set(store, fixPath(pathname), onSet(pathname, data))
-    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store)
-
-    return {
-        set,
-        get,
-        build: (root, watch) => fs2mem(root, {set, buildFilter, buildWatcher, watch}),
-        output: root => mem2fs(root, {get, outputFilter})
-    }
-}
+memory.build(path.resolve(__dirname, '../'), {watch: 1}).then(e => {
+    memory.output(path.resolve(__dirname, '../../memory-tree-out')).then(e => {
+        console.log('copy ok!')
+    }).catch(e => {
+        console.log(e)
+    })
+}).catch(e => {
+    console.log(e)
+})
