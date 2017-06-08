@@ -1,0 +1,25 @@
+{
+  "name": "memory-tree",
+  "version": "0.1.0",
+  "description": "text file to memory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shy2850/memory-tree.git"
+  },
+  "keywords": [
+    "fs2memory"
+  ],
+  "author": "shy2850",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shy2850/memory-tree/issues"
+  },
+  "homepage": "https://github.com/shy2850/memory-tree#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
