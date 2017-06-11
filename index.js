@@ -59,9 +59,19 @@ module.exports = (options) => {
     let store = {}
 
     const set = (pathname, data) => {
-        !pathname ? (store = data) : _.set(store, fixPath(pathname), onSet(pathname, data))
+        if (!pathname) {
+            store = data
+        } else {
+            let res = onSet(pathname, data, store)
+            if (res.next) {
+                res.next(data => _.set(store, fixPath(pathname), data))
+            } else {
+                _.set(store, fixPath(pathname), res)
+            }
+        }
+
     }
-    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store)
+    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store, store)
 
     return {
         set,
