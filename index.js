@@ -63,7 +63,7 @@ module.exports = (options) => {
             store = data
         } else {
             let res = onSet(pathname, data, store)
-            if (res.next) {
+            if (Object.prototype.toString.call(res) === '[object Promise]') {
                 res.next(data => _.set(store, fixPath(pathname), data))
             } else {
                 _.set(store, fixPath(pathname), res)
