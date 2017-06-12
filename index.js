@@ -29,14 +29,14 @@ const OPTIONS = {
      * @param  {string/buffer} data     资源内容 (注: 检查路径等时刻, data未设置, 参考 lib/fs2mem.js)
      * @return {boolean}         是否允许加载到内存
      */
-    buildFilter: (pathname, data) => (!data || data.length < 64 * 1024) && !/node_modules|([\\\/]|^)\./.test(pathname),
+    buildFilter: (pathname, data) => (!data || data.length < 64 * 1024) && !/node_modules|([\\/]|^)\./.test(pathname),
     /**
      * 允许从内存中保存到文件系统的资源
      * @param  {string} pathname 待检查资源路径
      * @param  {string/buffer} data     资源内容 (注: 检查路径等时刻, data未设置, 参考 lib/mem2fs.js)
      * @return {boolean}         是否允许保存到文件
      */
-    outputFilter: (pathname, data) => (!data || data.length < 64 * 1024) && !/node_modules|([\\\/]|^)\./.test(pathname),
+    outputFilter: (pathname, data) => (!data || data.length < 64 * 1024) && !/node_modules|([\\/]|^)\./.test(pathname),
     /**
      * 输出时重命名资源
      * @param  {string} pathname 待检查资源路径
@@ -46,7 +46,7 @@ const OPTIONS = {
     outputRename: (pathname, data) => pathname
 }
 
-const fixPath = pathname => pathname.match(/[^\\\/]+/g)
+const fixPath = pathname => pathname.match(/[^\\/]+/g)
 
 module.exports = (options) => {
     const {
@@ -57,9 +57,28 @@ module.exports = (options) => {
         outputFilter
     } = Object.assign({}, OPTIONS, options)
     let store = {}
+    function setStore (data) {
+        store = data || {}
+        Object.defineProperties(store, {
+            '_set': {value: (pathname, v) => _.set(store, fixPath(pathname), v)},
+            '_get': {value: pathname => _.get(store, fixPath(pathname))}
+        })
+    }
+    setStore({})
 
-    const set = (pathname, data) => pathname && _.set(store, fixPath(pathname), onSet(pathname, data))
-    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store)
+    const set = (pathname, data) => {
+        if (!pathname) {
+            setStore(data)
+        } else {
+            let res = onSet(pathname, data, store)
+            if (Object.prototype.toString.call(res) === '[object Promise]') {
+                res.next(data => _.set(store, fixPath(pathname), data))
+            } else {
+                _.set(store, fixPath(pathname), res)
+            }
+        }
+    }
+    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store, store)
 
     return {
         set,
