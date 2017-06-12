@@ -1,6 +1,6 @@
 {
   "name": "memory-tree",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "text file to memory",
   "main": "index.js",
   "scripts": {
