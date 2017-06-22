@@ -57,15 +57,6 @@ module.exports = (options) => {
         outputFilter
     } = Object.assign({}, OPTIONS, options)
     let store = {}
-    function setStore (data) {
-        store = data || {}
-        Object.defineProperties(store, {
-            '_set': {value: (pathname, v) => _.set(store, fixPath(pathname), v)},
-            '_get': {value: pathname => _.get(store, fixPath(pathname))}
-        })
-    }
-    setStore({})
-
     const set = (pathname, data) => {
         if (!pathname) {
             setStore(data)
@@ -84,6 +75,15 @@ module.exports = (options) => {
     const output = (target, pathname) => pathname ? mem2fs.build(target, {get, outputFilter})(pathname) : mem2fs.output(target, {get, outputFilter})
     const build = (src, target, watch) => input(src, watch).then(() => output(target))
     const getWithInput = (pathname, src) => get(pathname) || fs2mem.build(src, opt)(pathname)
+
+    function setStore (data) {
+        store = data || {}
+        Object.defineProperties(store, {
+            '_set': {value: (pathname, v) => _.set(store, fixPath(pathname), v)},
+            '_get': {value: getWithInput}
+        })
+    }
+    setStore({})
 
     return {
         set,
