@@ -1,6 +1,9 @@
 const path = require('path')
 const MemoryTree = require('../index')
 
+const src = path.join(__dirname, '../')
+const target = path.join(__dirname, '../../memory-tree-out')
+
 const memory = MemoryTree({
     /**
      * 存储数据时触发
@@ -21,7 +24,9 @@ const memory = MemoryTree({
      * @param  {string} eventType 修改类型 如: 'change'
      * @param  {string} pathname 事件触发的文件路径
      */
-    buildWatcher: (eventType, pathname) => console.log(eventType, pathname),
+    buildWatcher: (eventType, pathname) => {
+        memory.output(target, pathname)
+    },
     /**
      * 允许加载到内存的资源
      * @param  {string} pathname 待检查资源路径
@@ -45,12 +50,11 @@ const memory = MemoryTree({
     outputRename: (pathname, data) => pathname
 })
 
-memory.build(path.resolve(__dirname, '../'), {watch: 1}).then(e => {
-    memory.output(path.resolve(__dirname, '../../memory-tree-out')).then(e => {
-        console.log('copy ok!')
-    }).catch(e => {
-        console.log(e)
-    })
+let eslint = memory.getWithInput('/lodash/fp/__.js', path.join(__dirname, '../node_modules'))
+console.log(eslint + '')
+
+memory.copy(src, target, true).then(e => {
+    console.log('copy ok!')
 }).catch(e => {
     console.log(e)
 })

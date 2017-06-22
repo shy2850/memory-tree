@@ -78,12 +78,20 @@ module.exports = (options) => {
             }
         }
     }
+    const opt = {set, buildFilter, buildWatcher}
     const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store, store)
+    const input = (src, watch) => fs2mem.input(src, Object.assign(opt, {watch}))
+    const output = (target, pathname) => pathname ? mem2fs.build(target, {get, outputFilter})(pathname) : mem2fs.output(target, {get, outputFilter})
+    const build = (src, target, watch) => input(src, watch).then(() => output(target))
+    const getWithInput = (pathname, src) => get(pathname) || fs2mem.build(src, opt)(pathname)
 
     return {
         set,
         get,
-        build: (root, watch) => fs2mem(root, {set, buildFilter, buildWatcher, watch}),
-        output: root => mem2fs(root, {get, outputFilter})
+        getWithInput,
+        input,
+        output,
+        build,
+        copy: build
     }
 }
