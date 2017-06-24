@@ -1,10 +1,11 @@
 {
   "name": "memory-tree",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "text file to memory",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./lib/**.js",
+    "prepare": "npm run lint",
     "test": "node ./test/index"
   },
   "repository": {
