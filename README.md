@@ -6,7 +6,7 @@ map file system into memory within lodash
 
 ## Usage `test/index.js`
 
-```
+``` javascript
 const path = require('path')
 const MemoryTree = require('memory-tree')
 
