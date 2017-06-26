@@ -46,8 +46,11 @@ const OPTIONS = {
     outputRename: (pathname, data) => pathname
 }
 
-const fixPath = pathname => pathname.match(/[^\\/]+/g)
-
+const fixPathArr = pathname => pathname.match(/[^\\/]+/g)
+const fixPath = pathname => {
+    const match = pathname.match(/[^\\/]+/g)
+    return match ? match.join('/') : ''
+}
 module.exports = (options) => {
     const {
         onSet,
@@ -58,19 +61,20 @@ module.exports = (options) => {
     } = Object.assign({}, OPTIONS, options)
     let store = {}
     const set = (pathname, data) => {
+        pathname = fixPath(pathname)
         if (!pathname) {
             setStore(data)
         } else {
             let res = onSet(pathname, data, store)
             if (Object.prototype.toString.call(res) === '[object Promise]') {
-                res.next(data => _.set(store, fixPath(pathname), data))
+                res.next(data => _.set(store, fixPathArr(pathname), data))
             } else {
-                _.set(store, fixPath(pathname), res)
+                _.set(store, fixPathArr(pathname), res)
             }
         }
     }
-    const opt = {set, buildFilter, buildWatcher, get: pathname => _.get(store, fixPath(pathname))}
-    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPath(pathname)) : store, store)
+    const opt = {set, buildFilter, buildWatcher, get: pathname => _.get(store, fixPathArr(pathname))}
+    const get = (pathname) => onGet(pathname, pathname ? _.get(store, fixPathArr(pathname)) : store, store)
     const input = (src, watch) => fs2mem.input(src, Object.assign(opt, {watch}))
     const output = (target, pathname) => pathname ? mem2fs.build(target, {get, outputFilter})(pathname) : mem2fs.output(target, {get, outputFilter})
     const build = (src, target, watch) => input(src, watch).then(() => output(target))
@@ -79,7 +83,7 @@ module.exports = (options) => {
     function setStore (data) {
         store = data || {}
         Object.defineProperties(store, {
-            '_set': {value: (pathname, v) => _.set(store, fixPath(pathname), v)},
+            '_set': {value: (pathname, v) => _.set(store, fixPathArr(pathname), v)},
             '_get': {value: getWithInput}
         })
     }
