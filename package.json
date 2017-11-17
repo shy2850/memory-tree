@@ -1,6 +1,6 @@
 {
   "name": "memory-tree",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "text file to memory",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/shy2850/memory-tree#readme",
   "dependencies": {
+    "chokidar": "^1.7.0",
     "lodash": "^4.17.4",
     "mime": "^1.3.6"
   },
