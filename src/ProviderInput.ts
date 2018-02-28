@@ -59,7 +59,7 @@ const inputProviderWithWatcher: MemoryTree.BuildProvider = (options, store) => {
                     build(filename)
                     break
             }
-            buildWatcher(filename, eventType, build)
+            buildWatcher(filename, eventType, build, store)
         }, 300)
         chokidar.watch(root, {
             ignored: REG.ignored

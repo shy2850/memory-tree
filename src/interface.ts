@@ -33,7 +33,7 @@ namespace MemoryTree {
         }
         // fired on file(s) changed
         buildWatcher?: {
-            (pathname: string, eventType: string, build: Build): void
+            (pathname: string, eventType: string, build: Build, store: Store): void
         }
         // save data into memory by result.outputPath & result.data
         onSet: {
