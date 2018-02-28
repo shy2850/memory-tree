@@ -41,7 +41,7 @@ namespace MemoryTree {
         }
         // get data from memory 
         onGet: {
-            (pathname: string, data: DataBuffer, store: Store): Promise<{ data: DataBuffer }>
+            (pathname: string, data: DataBuffer, store: Store): Promise<DataBuffer>
         }
         // if can be persisted
         outputFilter?: {

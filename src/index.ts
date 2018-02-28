@@ -4,6 +4,8 @@ import ProviderOutput from './ProviderOutput'
 import Store from './store'
 import { extend } from 'lodash'
 
+export { defaultOptions }
+
 export default (options: MemoryTree.Options): MemoryTree => {
     options = extend({}, defaultOptions, options)
     const store = Store(options)

@@ -1,4 +1,4 @@
-import { REG, emptyFn, catchFn } from './defaults'
+import { REG, thenFn, catchFn } from './defaults'
 import { fixPath } from './utils'
 import { join } from 'path'
 import { readFile, statSync, readdirSync } from 'fs'
@@ -13,10 +13,10 @@ export const inputProvider: MemoryTree.BuildProvider = (options, store) => {
         const absolutePath = join(root, pathname)
         const stats = statSync(absolutePath)
         
-        let fn = emptyFn
+        let fn = thenFn()
         
         if (pathname && (!buildFilter || !buildFilter(pathname))) {
-            fn = emptyFn
+            fn = thenFn()
         } else if (stats.isDirectory()) {
             fn = (resolve, reject) => {
                 onSet(pathname, {}, store).then(({data, outputPath}) => {
