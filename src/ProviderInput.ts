@@ -37,14 +37,15 @@ export const inputProvider: MemoryTree.BuildProvider = (options, store) => {
         }
 
         const res = new Promise(fn)
-        if (withbuilding) {
-            store.setBuilding(1)
-            res.then(() => {
-                store.setBuilding(-1)
-            }).catch(() => {
-                store.setBuilding(-1)
-            })
-        }
+        //  BUGS: remove
+        // if (withbuilding) {
+        //     store.setBuilding(1)
+        //     res.then(() => {
+        //         store.setBuilding(-1)
+        //     }).catch(() => {
+        //         store.setBuilding(-1)
+        //     })
+        // }
         return res
     }
 }
