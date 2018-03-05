@@ -31,21 +31,27 @@ export const inputProvider: MemoryTree.BuildProvider = (options, store) => {
                 readFile(absolutePath, function (err, data) {
                     onSet(pathname, data, store).then(({ data, outputPath }) => {
                         store._set(outputPath, data)
-                    }).then(resolve).catch(catchFn(reject))
+                        resolve({ data, outputPath })
+                    }).catch(catchFn(reject))
                 })
             }
         }
 
         const res = new Promise(fn)
         //  BUGS: remove
-        // if (withbuilding) {
-        //     store.setBuilding(1)
-        //     res.then(() => {
-        //         store.setBuilding(-1)
-        //     }).catch(() => {
-        //         store.setBuilding(-1)
-        //     })
-        // }
+        if (withbuilding) {
+            store.setBuilding(1)
+            let timeout = setTimeout(function () {
+                store.setBuilding(-1)
+            }, 5000);
+            res.then(() => {
+                clearTimeout(timeout)
+                store.setBuilding(-1)
+            }).catch(() => {
+                clearTimeout(timeout)
+                store.setBuilding(-1)
+            })
+        }
         return res
     }
 }
