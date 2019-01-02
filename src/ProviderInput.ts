@@ -60,14 +60,19 @@ const inputProviderWithWatcher: MemoryTree.BuildProvider = (options, store) => {
     const build = inputProvider(options, store)
     const { buildWatcher, root, watch } = options
     if (watch && buildWatcher) {
-        const watcher = debounce((filename, eventType, ) => {
+        const watcher = (filename: string, eventType: string) => {
             switch (eventType) {
+                case 'add':
+                    if(!store._get(filename)) {
+                        build(filename)
+                    }
+                    break
                 case 'change':
                     build(filename)
                     break
             }
             buildWatcher(filename, eventType, build, store)
-        }, 300)
+        }
         chokidar.watch(root, {
             ignored: REG.ignored
         }).on('all', (eventType, filename) => watcher(
