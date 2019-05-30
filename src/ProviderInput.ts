@@ -2,8 +2,8 @@ import { REG, thenFn, catchFn } from './defaults'
 import { fixPath } from './utils'
 import { join } from 'path'
 import { readFile, statSync, readdirSync } from 'fs'
-import { debounce } from 'lodash'
 import * as chokidar from 'chokidar'
+import { MemoryTree } from './interface';
 
 export const inputProvider: MemoryTree.BuildProvider = (options, store) => {
     const { buildFilter, onSet, root } = options
@@ -58,7 +58,7 @@ export const inputProvider: MemoryTree.BuildProvider = (options, store) => {
 
 const inputProviderWithWatcher: MemoryTree.BuildProvider = (options, store) => {
     const build = inputProvider(options, store)
-    const { buildWatcher, root, watch } = options
+    const { buildWatcher, root, watch, buildFilter } = options
     if (watch && buildWatcher) {
         const watcher = (filename: string, eventType: string) => {
             switch (eventType) {
@@ -74,7 +74,7 @@ const inputProviderWithWatcher: MemoryTree.BuildProvider = (options, store) => {
             buildWatcher(filename, eventType, build, store)
         }
         chokidar.watch(root, {
-            ignored: REG.ignored
+            ignored: (pathname: string) => !buildFilter(pathname)
         }).on('all', (eventType, filename) => watcher(
             fixPath(fixPath(filename).replace(fixPath(root), '')),
             eventType

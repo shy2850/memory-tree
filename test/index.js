@@ -13,7 +13,6 @@ const memory = MemoryTree.default({
         memory.output(pathname)
     }
 })
-
 memory.input('', true).then(() => {
     memory.output()
 })

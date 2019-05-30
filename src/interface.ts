@@ -1,4 +1,4 @@
-namespace MemoryTree {
+export namespace MemoryTree {
     export type DataBuffer = Buffer | string | {}
     export interface Build {
         (pathname: string, withbuilding?: boolean): Promise<any>
@@ -48,9 +48,9 @@ namespace MemoryTree {
             (pathname: string): boolean
         }
     }
-}
-interface MemoryTree {
-    store: MemoryTree.Store,
-    input: MemoryTree.Build,
-    output: MemoryTree.Build
+    export interface MemoryTree {
+        store: MemoryTree.Store,
+        input: MemoryTree.Build,
+        output: MemoryTree.Build
+    }
 }

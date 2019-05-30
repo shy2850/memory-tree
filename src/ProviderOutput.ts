@@ -3,6 +3,7 @@ import { join } from 'path'
 import { writeFile, existsSync, mkdirSync } from 'fs'
 import { fixPath } from './utils'
 import { isPlainObject } from 'lodash'
+import { MemoryTree } from './interface';
 
 export const outputProvider: MemoryTree.BuildProvider = (options, store) => {
     const { outputFilter, dest } = options

@@ -1,6 +1,7 @@
 import { catchFn } from './defaults'
 import * as _ from 'lodash'
 import { fixPathArr } from './utils'
+import { MemoryTree } from './interface';
 
 export default function (options: MemoryTree.Options): MemoryTree.Store {
     const { onGet } = options

@@ -1,3 +1,5 @@
+import { MemoryTree } from "./interface";
+
 export const thenFn = (data?:any) => (resolve, reject) => resolve(data)
 export const catchFn = reject => err => reject(err) || console.trace(err)
 
