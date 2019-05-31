@@ -65,4 +65,3 @@ memory.build(path.resolve(__dirname, '../'), {watch: 1}).then(e => {
 })
 
 ```
-
