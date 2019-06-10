@@ -76,7 +76,7 @@ const inputProviderWithWatcher: MemoryTree.BuildProvider = (options, store) => {
         chokidar.watch(root, {
             ignored: [(filename: string) => {
                 const p = fixPath(fixPath(filename).replace(fixPath(root), ''))
-                return !buildFilter(p)
+                return !!p && !buildFilter(p)
             }]
         }).on('all', (eventType, filename) => watcher(
             fixPath(fixPath(filename).replace(fixPath(root), '')),
