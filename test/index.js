@@ -9,7 +9,7 @@ const memory = MemoryTree.default({
     // watch: true,
     dest: target,
     buildFilter (pathname) {
-        return !pathname || /README\.md/.test(pathname)
+        return /README\.md/.test(pathname)
     },
     buildWatcher (pathname, eventType) {
         buildWatcher(pathname, eventType)
