@@ -1,6 +1,6 @@
 {
   "name": "memory-tree",
-  "version": "0.6.11",
+  "version": "0.6.12",
   "description": "text file to memory",
   "main": "dist/index.js",
   "typings": "dist/interface.d.ts",
@@ -24,12 +24,12 @@
   "homepage": "https://github.com/shy2850/memory-tree#readme",
   "dependencies": {
     "chokidar": "^1.7.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
-    "@types/lodash": "^4.14.133",
-    "@types/node": "^9.6.49",
+    "@types/lodash": "^4.14.158",
+    "@types/node": "^9.6.56",
     "typescript": "^2.9.2"
   }
 }
