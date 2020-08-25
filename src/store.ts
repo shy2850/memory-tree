@@ -13,7 +13,7 @@ export default function (options: MemoryTree.Options): MemoryTree.Store {
             listeners.push(listener)
         },
         setBuilding: (n) => {
-            buildings += n
+            buildings = Math.max(buildings + n, 0);
             listeners.forEach(listener => listener(buildings > 0))
         },
         _get (path) {
