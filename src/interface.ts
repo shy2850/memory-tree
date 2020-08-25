@@ -7,6 +7,7 @@ export namespace MemoryTree {
         (options: Options, store: Store): Build
     }
     export interface Store {
+        onBuildingChange: (listener: (building: boolean) => void) => void
         setBuilding: {
             (num: 1|-1): void
         }

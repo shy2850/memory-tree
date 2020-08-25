@@ -1,6 +1,6 @@
 {
   "name": "memory-tree",
-  "version": "0.6.12",
+  "version": "0.6.13",
   "description": "text file to memory",
   "main": "dist/index.js",
   "typings": "dist/interface.d.ts",
