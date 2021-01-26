@@ -24,7 +24,7 @@ export const outputProvider: MemoryTree.BuildProvider = (options, store) => {
                             .then(resolve)
                             .catch(catchFn(reject))
                     } else {
-                        writeFile(absolutePathname, data, (err) => {
+                        writeFile(absolutePathname, <any>data, (err) => {
                             if (err) {
                                 catchFn(reject)(err)
                             } else {
