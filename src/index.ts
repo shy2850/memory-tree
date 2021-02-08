@@ -4,6 +4,7 @@ import ProviderOutput from './ProviderOutput'
 import Store from './store'
 import { extend } from 'lodash'
 import { MemoryTree } from './interface';
+export * from './interface'
 
 export { defaultOptions }
 
